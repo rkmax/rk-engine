@@ -17,16 +17,28 @@
         },
 
         /**
+         * Determina si hay colision entre dos circulos
+         * @param  {RkmaxCircle} a
+         * @param  {RkmaxCircle} b
+         * @return {Boolean}
+         */
+        CirclevsCircle: function(a, b) {
+            var r = a.radius + b.radius;
+            r *= r;
+
+            return r < (a.x + b.x)^2 + (a.y + b.y)^2;
+        },
+
+        /**
          * Calcula la sobreposición entre dos cuerpos AABB, si no existe devuelve {null}
          * @param  {RkmaxAABB} a
          * @param  {RkmaxAABB} b
          * @return {RkmaxManifold}
          */
-        AABBOverlap: function(a, b, debug) {
+        AABBOverlap: function(a, b) {
             var
                 normal = new RkmaxVector2D(),
                 manifold = new RkmaxManifold(),
-                // A calcular
                 a_extent,
                 b_extent,
                 x_overlap,
@@ -62,13 +74,9 @@
                         }
                         manifold.penetration = y_overlap;
                     }
-                    // if (x_overlap < y_overlap) {
-                    //     manifold.normal = (normal.x < 0) ? normal.reset(-1, 0) : normal.reset(1, 0);
-                    //     manifold.penetration = x_overlap;
-                    // } else {
-                    //     manifold.normal = (normal.y < 0) ? normal.reset(0, -1) : normal.reset(0, 1);
-                    //     manifold.penetration = y_overlap;
-                    // }
+
+                    manifold.a = a;
+                    manifold.b = b;
 
                     return manifold;
                 }
@@ -85,7 +93,7 @@
          * @param  {RkmaxManifold} manifold
          * @return {undefined}
          */
-        ABBBCollision: function(a, b, manifold, debug) {
+        ABBBCollision: function(manifold) {
             var
                 relativeVel = new RkmaxVector2D(),
                 impulse = new RkmaxVector2D(),
@@ -95,7 +103,9 @@
                 percent = 0.8,
                 slop = 0.01,
                 correction_x,
-                correction_y
+                correction_y,
+                a = manifold.a,
+                b = manifold.b
             ;
 
             relativeVel.reset(b.velocity.x - a.velocity.x, b.velocity.y - a.velocity.y);
@@ -121,6 +131,43 @@
             b.velocity.y += (b.invmass * impulse.y);
             b.x += b.invmass * correction_x;
             b.y += b.invmass * correction_y;
+        },
+
+        /**
+         * Resulve la colision entre dos circulos
+         * @param  {RkmaxCircle} a
+         * @param  {RkmaxCircle} b
+         * @param  {RkmaxManifold} manifold
+         * @return {undefined}
+         */
+        CircleCollision: function(a, b, manifold) {
+            var
+                relativeVel = new RkmaxVector2D(),
+                r = a.radius + b.radius,
+                dist
+            ;
+
+            r *= r;
+            relativeVel.reset(b.x - a.x, b.y - a.y);
+
+            if (relativeVel.getLengthSquared() > r) return;
+
+            dist = relativeVel.getLength();
+            if (dist !== 0) {
+                manifold.penetration = r- dist;
+            } else {
+                manifold.penetration = a.radius;
+            }
+
+            // collisionPointX =
+            //  ((firstBall.x * secondBall.radius) + (secondBall.x * firstBall.radius))
+            //  / (firstBall.radius + secondBall.radius);
+
+            // collisionPointY =
+            //  ((firstBall.y * secondBall.radius) + (secondBall.y * firstBall.radius))
+            //  / (firstBall.radius + secondBall.radius);
+
+
         }
     };
 })(window);

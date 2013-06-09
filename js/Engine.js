@@ -38,9 +38,9 @@
             for (j = i + 1; j < this.entities.length; j++) {
                 b = this.entities[j];
 
-                var manifold = RkmaxOperation.AABBOverlap(a, b, this.world.DEBUG);
+                var manifold = RkmaxOperation.AABBOverlap(a, b);
                 if (manifold) {
-                    RkmaxOperation.ABBBCollision(a, b, manifold, this.world.DEBUG);
+                    RkmaxOperation.ABBBCollision(manifold);
                 }
             }
         }

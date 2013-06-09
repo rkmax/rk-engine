@@ -69,6 +69,15 @@
     };
 
     /**
+     * Calcula el largo del vector
+     * @return {Number}
+     */
+    RkmaxVector2D.prototype.getLengthSquared = function() {
+
+        return (this.x * this.x)+(this.y * this.y);
+    };
+
+    /**
      * Cambia el largo del vector (X, Y), pero no el angulo
      * @param  {Number} newLength
      * @return {undefined}

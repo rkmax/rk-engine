@@ -52,6 +52,10 @@
 
                 var floor = new RkmaxAABB(100, 50 , {
                     mass: 1,
+                    velocity: new RkmaxVector2D(
+                        0.5,
+                        0.7
+                    ),
                     restitution: 1,
                     width: 50,
                     height: 50,
@@ -62,10 +66,10 @@
                     mass: 1,
                     velocity: new RkmaxVector2D(
                         0.7,
-                        0.7
+                        0.5
                     ),
                     restitution: 1,
-                    width: 50,
+                    width: 70,
                     height: 50,
                     color: 'rgba(150, 10, 0, 0.5)'
                 });
