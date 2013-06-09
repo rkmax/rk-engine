@@ -9,7 +9,17 @@
      */
     window.RkmaxEngine = function(settings) {
 
+        /**
+         * Configuracion del mundo
+         * @type {RkmaxWorld}
+         */
         this.world = new RkmaxWorld(settings);
+
+        /**
+         * Manejador del ciclo
+         * @type {[type]}
+         */
+        this.requestId = undefined;
 
         /**
          * Lista de cuerpos
@@ -51,13 +61,25 @@
             this.entities[i].draw(this.world);
         }
 
-        window.webkitRequestAnimationFrame(this.update.bind(this));
+        this.requestId = window.requestAnimationFrame(this.update.bind(this));
+    };
 
+    RkmaxEngine.prototype.play = function() {
+        if (!this.requestId) {
+            this.world.lastTime = Date.now();
+            this.update();
+        }
+    };
+
+    RkmaxEngine.prototype.stop = function() {
+        if (this.requestId) {
+            window.cancelAnimationFrame(this.requestId);
+            this.requestId = undefined;
+        }
     };
 
     RkmaxEngine.prototype.init = function() {
-        this.world.lastTime = Date.now();
-        this.update();
+        this.play();
     };
 
 })(window);

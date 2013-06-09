@@ -40,12 +40,6 @@
         this.height = 50;
 
         /**
-         * Fijo
-         * @type {Boolean}
-         */
-        this.fixed = false;
-
-        /**
          * Masa
          * @type {Number}
          */
@@ -92,10 +86,6 @@
      */
     RkmaxAABB.prototype.update = function(world) {
 
-        if (typeof world.gravity !== 'undefined') {
-            if (!this.fixed) this.velocity.y += world.gravity;
-        }
-
         this.x += this.velocity.x * world.elapsed;
         this.y += this.velocity.y * world.elapsed;
 
@@ -103,7 +93,7 @@
             // this.x = 0;
             this.velocity.x = Math.abs(this.velocity.x);
         } else if (this.x + this.width > world.width) {
-            // this.x = world.width - this.width;
+            this.x = world.width - this.width;
             this.velocity.x *= -1;
         }
 
@@ -111,7 +101,7 @@
             // this.y = 0;
             this.velocity.y = Math.abs(this.velocity.y);
         } else if (this.y + this.height > world.height) {
-            // this.y = world.height - this.height;
+            this.y = world.height - this.height;
             this.velocity.y *= -1;
         }
 
@@ -126,7 +116,7 @@
      */
     RkmaxAABB.prototype.setMass = function(newMass) {
         this.mass = newMass;
-        this.invmass = (newMass <= 0) ? 0 : 1 / newMass;
+        this.invmass = (this.mass === 0) ? 0 : 1 / this.mass;
     };
 
     RkmaxAABB.prototype.draw = function(world) {
@@ -136,5 +126,6 @@
 
         world.context.fillStyle = this.color;
         world.context.fillRect(this.x, this.y, this.width, this.height);
+        world.context.fillText("Vel [" + this.velocity.x + ", " + this.velocity.y + "]", this.x, this.y);
     };
 })(window);

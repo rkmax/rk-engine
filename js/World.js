@@ -21,12 +21,6 @@
         this.elapsed = 0;
 
         /**
-         * Fuerza de gravedad
-         * @type {Number}
-         */
-        this.gravity = 0;
-
-        /**
          * Alto en pixeles
          * @type {Number}
          */

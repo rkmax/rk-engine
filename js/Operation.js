@@ -47,11 +47,11 @@
 
             normal.reset(b.x - a.x, b.y - a.y);
 
+            // SAT test
             a_extent = (a.max.x - a.min.x) / 2;
             b_extent = (b.max.x - b.min.x) / 2;
             x_overlap = a_extent + b_extent - Math.abs(normal.x);
 
-            // SAT test sobre X
             if (x_overlap > 0) {
                 a_extent = (a.max.y - a.min.y) / 2;
                 b_extent = (b.max.y - b.min.y) / 2;
@@ -63,7 +63,7 @@
                         if ( normal.x < 0) {
                             manifold.normal = new RkmaxVector2D(-1, 0);
                         } else {
-                            manifold.normal = new RkmaxVector2D(0, 0);
+                            manifold.normal = new RkmaxVector2D(1, 0);
                         }
                         manifold.penetration = x_overlap;
                     } else {
@@ -114,6 +114,7 @@
             if (relativeVelNormal > 0) return;
 
             restitution = Math.min(a.restitution, b.restitution);
+
             impulseJ = -(1 + restitution) * relativeVelNormal;
             impulseJ /= a.invmass + b.invmass;
 

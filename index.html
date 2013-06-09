@@ -7,84 +7,10 @@
 </head>
 <body>
     <div id="main" class="wrapper">
-        <canvas></canvas>
+        <button id="btn-stop">Detener</button>
+        <button id="btn-start">Seguir</button>
+        <canvas id="canvas"></canvas>
     </div>
-    <script>
-
-        var
-            sf = {},
-            sf_loads = 0,
-            App,
-            deps = [
-                'AABB', 'Engine', 'Manifold', 'Operation', 'Vector2D', 'World'
-            ],
-            mainloop
-        ;
-
-        function loadDeps() {
-
-            for (var i = deps.length - 1; i >= 0; i--) {
-                var js = document.createElement("script");
-                js.type = "text/javascript";
-                js.src = "js/" + deps[i] + ".js";
-                js.onload = function() {
-                    sf_loads++;
-                };
-                document.body.appendChild(js);
-            };
-        }
-
-        function start() {
-
-            if (sf_loads !== deps.length) {
-                setTimeout(start, 500);
-            } else {
-                var canvas = document.getElementsByTagName('canvas')[0];
-                canvas.width = 500;
-                canvas.height = 400;
-                var context = canvas.getContext('2d');
-
-                App = new RkmaxEngine({
-                    context: context,
-                    width: canvas.width,
-                    height: canvas.height
-                });
-
-                var floor = new RkmaxAABB(100, 50 , {
-                    mass: 1,
-                    velocity: new RkmaxVector2D(
-                        0.5,
-                        0.7
-                    ),
-                    restitution: 1,
-                    width: 50,
-                    height: 50,
-                    fixed: true
-                });
-
-                var ent = new RkmaxAABB(0, 0 , {
-                    mass: 1,
-                    velocity: new RkmaxVector2D(
-                        0.7,
-                        0.5
-                    ),
-                    restitution: 1,
-                    width: 70,
-                    height: 50,
-                    color: 'rgba(150, 10, 0, 0.5)'
-                });
-
-                App.entities.push(floor);
-                App.entities.push(ent);
-
-                App.init();
-            }
-        }
-
-        window.onload = function() {
-            loadDeps();
-            start();
-        };
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
