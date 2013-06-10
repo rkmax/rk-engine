@@ -8,14 +8,6 @@ body {
     height: 100%;
 }
 
-.wrapper {
-    margin: auto;
-    width: 90%;
-    height: 90%;
-    text-align: center;
-    margin-top: 10%;
-}
-
 canvas {
     border: 1px solid #CCC;
 }

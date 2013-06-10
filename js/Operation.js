@@ -45,42 +45,31 @@
                 y_overlap
             ;
 
+            manifold.a = a;
+            manifold.b = b;
+
             normal.reset(b.x - a.x, b.y - a.y);
 
-            // SAT test
+            // SAT test X
             a_extent = (a.max.x - a.min.x) / 2;
             b_extent = (b.max.x - b.min.x) / 2;
             x_overlap = a_extent + b_extent - Math.abs(normal.x);
 
             if (x_overlap > 0) {
+
+                // SAT test Y
                 a_extent = (a.max.y - a.min.y) / 2;
                 b_extent = (b.max.y - b.min.y) / 2;
                 y_overlap = a_extent + b_extent - Math.abs(normal.y);
 
-                if (y_overlap > 0) {
+                manifold.normal = normal.normalize();
+                manifold.penetration = x_overlap;
 
-                    if (x_overlap > y_overlap) {
-                        if ( normal.x < 0) {
-                            manifold.normal = new RkmaxVector2D(-1, 0);
-                        } else {
-                            manifold.normal = new RkmaxVector2D(1, 0);
-                        }
-                        manifold.penetration = x_overlap;
-                    } else {
-                        if (normal.y < 0) {
-                            manifold.normal = new RkmaxVector2D(0, -1);
-                        } else {
-                            manifold.normal = new RkmaxVector2D(0, 1);
-                        }
-                        manifold.penetration = y_overlap;
-                    }
-
-                    manifold.a = a;
-                    manifold.b = b;
-
-                    return manifold;
+                if (y_overlap > x_overlap) {
+                    manifold.penetration = y_overlap;
                 }
 
+                return manifold;
             }
 
             return null;
@@ -88,8 +77,6 @@
 
         /**
          * Resulve la colision entre dos objetos AABB
-         * @param  {RkmaxAABB} a
-         * @param  {RkmaxAABB} b
          * @param  {RkmaxManifold} manifold
          * @return {undefined}
          */
@@ -125,35 +112,35 @@
 
             a.velocity.x -= (a.invmass * impulse.x);
             a.velocity.y -= (a.invmass * impulse.y);
-            a.x -= a.invmass * correction_x;
-            a.y -= a.invmass * correction_y;
+            a.x += a.invmass * correction_x;
+            a.y += a.invmass * correction_y;
 
             b.velocity.x += (b.invmass * impulse.x);
             b.velocity.y += (b.invmass * impulse.y);
-            b.x += b.invmass * correction_x;
-            b.y += b.invmass * correction_y;
+            b.x -= b.invmass * correction_x;
+            b.y -= b.invmass * correction_y;
         },
 
         /**
          * Resulve la colision entre dos circulos
-         * @param  {RkmaxCircle} a
-         * @param  {RkmaxCircle} b
          * @param  {RkmaxManifold} manifold
          * @return {undefined}
          */
-        CircleCollision: function(a, b, manifold) {
+        CircleCollision: function(manifold) {
             var
-                relativeVel = new RkmaxVector2D(),
+                normal = new RkmaxVector2D(),
+                a = manifold.a,
+                b = manifold.b,
                 r = a.radius + b.radius,
                 dist
             ;
 
             r *= r;
-            relativeVel.reset(b.x - a.x, b.y - a.y);
+            normal.reset(b.x - a.x, b.y - a.y);
 
-            if (relativeVel.getLengthSquared() > r) return;
+            if (normal.getLengthSquared() > r) return;
 
-            dist = relativeVel.getLength();
+            dist = normal.getLength();
             if (dist !== 0) {
                 manifold.penetration = r- dist;
             } else {

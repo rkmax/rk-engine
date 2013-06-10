@@ -126,6 +126,6 @@
 
         world.context.fillStyle = this.color;
         world.context.fillRect(this.x, this.y, this.width, this.height);
-        world.context.fillText("Vel [" + this.velocity.x + ", " + this.velocity.y + "]", this.x, this.y);
+        world.context.fillText("Vel [" + this.velocity.x.toFixed(3) + ", " + this.velocity.y.toFixed(3) + "]", this.x, this.y);
     };
 })(window);

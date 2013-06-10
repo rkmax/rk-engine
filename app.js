@@ -41,7 +41,7 @@ function start() {
 
 
         var ent = new RkmaxAABB(225, 175 , {
-            mass: 4,
+            mass: 1,
             velocity: new RkmaxVector2D(0, 0),
             restitution: 1,
             width: 50,
@@ -50,7 +50,7 @@ function start() {
         });
 
         var ent2 = new RkmaxAABB(0, 0 , {
-            mass: 1,
+            mass: 4,
             velocity: new RkmaxVector2D(0.15, 0.1),
             restitution: 1,
             width: 100,

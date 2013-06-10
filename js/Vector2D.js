@@ -96,7 +96,10 @@
      */
     RkmaxVector2D.prototype.getAngle = function() {
 
-        return Math.atan2(this.y, this.x);
+        var x = Math.atan2(this.y, this.x);
+        var PI2 = 2* Math.PI;
+
+        return (x > 0 ? x : (PI2 + x)) * 360 / PI2;
     };
 
     /**
