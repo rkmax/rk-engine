@@ -173,6 +173,13 @@
         return this;
     };
 
+    RkmaxVector2D.prototype.normal = function() {
+        this.x /= this.x;
+        this.y /= this.y;
+
+        return this;
+    };
+
     /**
      * Copia el vector pasado
      * @param  {RkmaxVector2D} v

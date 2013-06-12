@@ -62,10 +62,19 @@
                 b_extent = (b.max.y - b.min.y) / 2;
                 y_overlap = a_extent + b_extent - Math.abs(normal.y);
 
-                manifold.normal = normal.normalize();
-                manifold.penetration = x_overlap;
-
-                if (y_overlap > x_overlap) {
+                if (x_overlap < y_overlap) {
+                    if (normal.x < 0) {
+                        manifold.normal = new RkmaxVector2D(-1, 0);
+                    } else {
+                        manifold.normal = new RkmaxVector2D(1, 0);
+                    }
+                    manifold.penetration = x_overlap;
+                } else {
+                    if (normal.y < 0) {
+                        manifold.normal = new RkmaxVector2D(0, -1);
+                    } else {
+                        manifold.normal = new RkmaxVector2D(0, 1);
+                    }
                     manifold.penetration = y_overlap;
                 }
 
